@@ -1,10 +1,10 @@
-<project name="CirclesEditor" default="dist" basedir=".">
+<project name="CirclesEditor" default="run" basedir=".">
   <property name="src" location="."/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
 
   <path id="lib.path.ref">
-    <fileset dir="." includes="x30.jar"/>
+    <fileset dir="." includes="x30.jar,substance.jar,trident.jar"/>
   </path>
 
   <target name="init">
@@ -19,14 +19,23 @@
   <target name="dist" depends="compile"
         description="generate the distribution">
     <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
+    <mkdir dir="${dist}"/>
 
     <!-- Put everything in ${build} into the CirclesEditor-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/CirclesEditor-${DSTAMP}.jar" basedir="${build}"/>
+    <jar jarfile="${dist}/CirclesEditor-${DSTAMP}.jar" basedir="${build}"/>
   </target>
 
   <target name="clean" description="clean up">
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
+  </target>
+  
+  <target name="run" depends="compile">
+    <java classname="main" fork="yes">
+    <classpath>
+      <pathelement location="${build}"/>
+      <path refid="lib.path.ref" />
+    </classpath>
+    </java>
   </target>
 </project>
